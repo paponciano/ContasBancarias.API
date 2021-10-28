@@ -85,5 +85,32 @@ namespace Models
 
             return listaContas;
         }
+
+        public bool Depositar(Deposito deposito, int numero, out string mensagemErro)
+        {
+            bool efetuouDeposito = false;
+            mensagemErro = "";
+            MySqlConnection conn = new("server=127.0.0.1;user=root;password=root;database=controlbank");
+            try
+            {
+                conn.Open();
+                MySqlCommand cmd = new();
+                cmd.Connection = conn;
+                cmd.CommandText = "update conta set saldo = saldo + @valor where numero = @numero";
+                cmd.Parameters.AddWithValue("@valor", deposito.Valor);
+                cmd.Parameters.AddWithValue("@numero", numero);
+                efetuouDeposito = cmd.ExecuteNonQuery() >= 1;
+            }
+            catch(Exception ex)
+            {
+                mensagemErro = ex.Message;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return efetuouDeposito;
+        }
     }
 }

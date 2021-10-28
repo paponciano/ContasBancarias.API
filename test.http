@@ -1,0 +1,10 @@
+### Variables
+@url = http://localhost:5000
+
+### Depositar Saldo em Conta
+POST {{url}}/Conta/2009 HTTP/1.1
+Content-Type: application/json
+
+{
+    "valor": 10000
+}
